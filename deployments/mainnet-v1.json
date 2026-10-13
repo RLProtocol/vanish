@@ -1,0 +1,11 @@
+{
+  "lookupTable": "7BUtskptqD7Le3dhY4mob1TvTrX7BZjiS3y9y7WxsgEk",
+  "network": "mainnet-beta",
+  "programId": "DJVQZmkxNGhhETMivj7U9curexRvNGeN3DesLBwfY6YS",
+  "pool": "62Wqof98pvzhxJRabmgBeUitrQ48rg3SchZV92Hb5ojj",
+  "solVault": "9WxUTgEZZ1x1qUm27jHvfUr54Gw2zoDzHL9isankZhQ5",
+  "admin": "JA5KQPU3aZbGZaGQ5yj5igtEXJm6tqpqxgTRrgcatAAC",
+  "status": "closed",
+  "closedAt": "2026-10-07",
+  "note": "v1: closed after all funds were withdrawn; 1.3078 SOL reclaimed. Lookup table deactivated."
+}

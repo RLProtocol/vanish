@@ -1,0 +1,21 @@
+# never upload secrets
+keys/
+.env
+.env.*
+!web/.env.production
+.solmix/
+*.pem
+# not needed by the site or the functions
+target/
+legacy/
+programs/
+tests/
+tools/
+test-ledger/
+.anchor/
+circuits/
+idl/
+docs/
+node_modules/
+web/node_modules/
+web/dist/

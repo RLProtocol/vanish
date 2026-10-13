@@ -1,0 +1,10 @@
+[
+  { "id": "open", "text": "Every wallet on Solana is an open book. Anyone can see what you hold, and every trade you make." },
+  { "id": "brand", "text": "Vanish changes that." },
+  { "id": "what", "text": "Vanish is a privacy protocol for Solana, built on the same principle as Tornado Cash. Everyone deposits into one shared pool, and zero-knowledge proofs break the link between who puts money in, and who takes it out." },
+  { "id": "shield", "text": "Shield Solana, dollars or tokenized stocks into the pool. Only your key can ever spend them." },
+  { "id": "swap", "text": "Swap privately, right inside the pool. Solana into NVIDIA, dollars into stocks. Your wallet never appears." },
+  { "id": "buy", "text": "Or buy any token, even a fresh pump dot fun launch, and receive it in a brand new wallet with no link back to you." },
+  { "id": "proof", "text": "Every action is a proof, checked on-chain. No one can freeze your funds." },
+  { "id": "outro", "text": "Vanish. Shield, swap and buy, without a trail. Try it at vanish dot website." }
+]

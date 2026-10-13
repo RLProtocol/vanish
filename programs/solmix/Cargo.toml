@@ -1,0 +1,26 @@
+[package]
+name = "solmix"
+version = "0.1.0"
+description = "Shielded pool for SOL, stablecoins and tokenized stocks on Solana"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "solmix"
+
+[features]
+default = []
+mock-swap = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build", "anchor-spl/idl-build"]
+
+[dependencies]
+anchor-lang = "0.31.1"
+anchor-spl = "0.31.1"
+groth16-solana = "0.2.0"
+solana-poseidon = "2"
+# large fixed arrays in the zero-copy pool account
+bytemuck = { version = "1", features = ["min_const_generics"] }

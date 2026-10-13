@@ -1,0 +1,15 @@
+{
+  "label": "MIXER",
+  "file": "Vanish - Mixer (Shield & Unshield).mp4",
+  "lines": [
+    { "id": "intro", "text": "This is the Vanish mixer: the private way to move money on Solana." },
+    { "id": "problem", "text": "Normally, every transfer leaves a public trail, straight from your wallet to whoever receives it." },
+    { "id": "unlock", "text": "First, connect your wallet and sign once to unlock your private balance. The signature never leaves your browser.", "pause": 0.3 },
+    { "id": "pick", "text": "Pick an asset and one of the fixed sizes. Everyone deposits the same amounts, so every deposit looks identical." },
+    { "id": "prove", "text": "Your browser builds a zero-knowledge proof, and your deposit becomes a private, encrypted note that only your key can spend." },
+    { "id": "crowd", "text": "Then give it time. The more people deposit after you, the bigger the crowd you hide in. The privacy meter shows exactly how big it is." },
+    { "id": "unshield", "text": "When you're ready, unshield any amount to any wallet. A fresh one is best.", "pause": 0.3 },
+    { "id": "relayer", "text": "Our relayer submits it and pays the gas, so your wallet never signs. Whatever you don't withdraw stays private as change." },
+    { "id": "outro", "text": "Vanish mixer. Fixed amounts in, any amount out, and no trail between them. vanish.website", "say": "Vanish mixer. Fixed amounts in, any amount out, and no trail between them. vanish dot website.", "pause": 0.3 }
+  ]
+}

@@ -1,0 +1,573 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Vanish promo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=block" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #111316; --card: #1f2227; --card-2: #2a2e35; --field: #191b1f; --line: rgba(255,255,255,.1);
+    --text: #f2f4f3; --text-2: #cfd4d8; --muted: #959ca5; --ok: #5fd08a; --danger: #ff8f7e; --accent: #9945ff; --accent-text: #b57bff;
+    --grad: linear-gradient(90deg, #9945ff 0%, #8752f3 30%, #5497d5 50%, #43b4ca 60%, #28e0b9 72%, #19fb9b 97%);
+    --font: "Manrope", system-ui, sans-serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #000; }
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); font-family: var(--font); color: var(--text); }
+  .abs { position: absolute; }
+  .grad-text { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 40px 80px -30px rgba(0,0,0,.7); }
+  .mono { font-family: var(--mono); }
+  .muted { color: var(--muted); }
+  .row { display: flex; align-items: center; }
+  .chip { display: inline-flex; align-items: center; gap: 10px; padding: 12px 20px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); font-weight: 600; font-size: 24px; }
+  .logo { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex: none; }
+  .btn { height: 76px; border-radius: 14px; display: grid; place-items: center; font-weight: 700; font-size: 28px; color: #0d0b14; background: var(--grad); }
+  .tabs { display: flex; gap: 6px; padding: 6px; background: var(--field); border-radius: 14px; }
+  .tab { flex: 1; height: 54px; display: grid; place-items: center; border-radius: 10px; color: var(--muted); font-weight: 650; font-size: 22px; }
+  .tab.on { background: var(--card-2); color: var(--text); }
+  .label { font-size: 20px; color: var(--muted); display: flex; justify-content: space-between; margin-bottom: 10px; }
+  .field { background: var(--field); border: 1px solid var(--line); border-radius: 14px; height: 76px; display: flex; align-items: center; padding: 0 22px; gap: 14px; font-size: 26px; font-weight: 600; }
+  .denoms { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .denom { height: 76px; border-radius: 14px; border: 1px solid var(--line); background: var(--field); display: grid; place-items: center; font-weight: 700; font-size: 28px; }
+  .denom.on { border-color: transparent; background: linear-gradient(var(--field), var(--field)) padding-box, var(--grad) border-box; border: 2px solid transparent; }
+  .sum { background: var(--field); border-radius: 14px; padding: 18px 22px; font-size: 21px; }
+  .sum div { display: flex; justify-content: space-between; padding: 6px 0; }
+  .sum dt { color: var(--muted); } .sum dd { margin: 0; font-family: var(--mono); }
+  .scene-title .num { font: 600 26px var(--mono); color: var(--muted); letter-spacing: .1em; }
+  .scene-title h2 { margin: 10px 0 0; font-size: 104px; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+  .scene-title p { margin: 26px 0 0; font-size: 34px; color: var(--text-2); line-height: 1.35; max-width: 640px; }
+  .explorer-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--line); font-size: 24px; }
+  .redact { display: inline-block; height: 22px; border-radius: 6px; background: repeating-linear-gradient(-45deg, #3a3f47 0 8px, #2d3138 8px 16px); vertical-align: middle; }
+  .px { position: absolute; width: 44px; height: 44px; border-radius: 4px; }
+  .guarantee { position: absolute; padding: 18px 26px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); font-size: 27px; font-weight: 650; display: flex; gap: 14px; align-items: center; white-space: nowrap; }
+  .tick { width: 30px; height: 30px; border-radius: 50%; background: rgba(95,208,138,.16); color: var(--ok); display: grid; place-items: center; font-size: 20px; font-weight: 800; flex: none; }
+  .node { position: absolute; width: 360px; padding: 26px; border-radius: 20px; background: var(--card); border: 1px solid var(--line); text-align: center; }
+  .node b { display: block; font-size: 30px; } .node span { display: block; margin-top: 8px; font: 500 22px var(--mono); color: var(--muted); }
+  #caption { position: absolute; left: 50%; bottom: 46px; transform: translateX(-50%); max-width: 1500px; padding: 16px 34px; border-radius: 16px; background: rgba(8,9,11,.72); font-size: 34px; font-weight: 600; text-align: center; line-height: 1.3; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <!-- background -->
+  <div id="dots" class="abs" style="inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1.4px, transparent 1.6px);background-size:26px 26px"></div>
+  <div id="glowA" class="abs" style="width:900px;height:900px;border-radius:50%;background:radial-gradient(circle, rgba(153,69,255,.32), transparent 65%)"></div>
+  <div id="glowB" class="abs" style="width:900px;height:900px;border-radius:50%;background:radial-gradient(circle, rgba(25,251,155,.18), transparent 65%)"></div>
+
+  <!-- persistent corner logo -->
+  <div id="corner" class="abs" style="left:70px;top:56px;font:800 34px var(--font);letter-spacing:.32em" ><span class="grad-text">VANISH</span></div>
+
+  <!-- S1: the open book -->
+  <div id="s1" class="abs" style="inset:0">
+    <div id="s1h" class="abs" style="left:0;right:0;top:130px;text-align:center;font-size:76px;font-weight:700;letter-spacing:-.02em">Every wallet is an <span style="color:var(--danger)">open book.</span></div>
+    <div id="explorer" class="card abs" style="left:310px;top:300px;width:1300px;height:470px;padding:0;overflow:hidden">
+      <div class="row" style="gap:14px;padding:22px 30px;border-bottom:1px solid var(--line);background:var(--field)">
+        <span style="width:14px;height:14px;border-radius:50%;background:#ff5f57"></span><span style="width:14px;height:14px;border-radius:50%;background:#febc2e"></span><span style="width:14px;height:14px;border-radius:50%;background:#28c840"></span>
+        <span class="mono" style="margin-left:18px;font-size:22px;color:var(--text-2)">solscan.io/account/<b style="color:var(--text)">7xKp…Q2vR</b></span>
+      </div>
+      <div class="row" style="align-items:flex-start;gap:50px;padding:24px 36px">
+        <div style="flex:1">
+          <div class="muted" style="font-size:20px;letter-spacing:.12em;margin-bottom:6px">HOLDINGS</div>
+          <div class="explorer-row h"><span class="row" style="gap:14px"><img class="logo" src="SOL.png"/>SOL</span><span class="mono">42.18</span></div>
+          <div class="explorer-row h"><span class="row" style="gap:14px"><img class="logo" src="NVDA.png"/>NVDAx</span><span class="mono">120 sh</span></div>
+          <div class="explorer-row h"><span class="row" style="gap:14px"><img class="logo" src="USDC.png"/>USDC</span><span class="mono">18,400</span></div>
+          <div class="explorer-row h"><span class="row" style="gap:14px"><span class="logo" style="background:var(--grad)"></span>$GHOST</span><span class="mono">9.2M</span></div>
+        </div>
+        <div style="flex:1.15">
+          <div class="muted" style="font-size:20px;letter-spacing:.12em;margin-bottom:6px">RECENT ACTIVITY</div>
+          <div class="explorer-row a"><span>Bought 9.2M $GHOST</span><span class="muted mono">2m ago</span></div>
+          <div class="explorer-row a"><span>Sent 500 USDC → 9fTe…4mWa</span><span class="muted mono">1h ago</span></div>
+          <div class="explorer-row a"><span>Swapped 20 SOL → NVDAx</span><span class="muted mono">3h ago</span></div>
+          <div class="explorer-row a"><span>Received 42 SOL from Binance</span><span class="muted mono">1d ago</span></div>
+        </div>
+      </div>
+    </div>
+    <div id="watch1" class="chip abs" style="left:1380px;top:250px;border-color:rgba(255,143,126,.5);color:var(--danger)">● copy-trade bot following</div>
+    <div id="watch2" class="chip abs" style="left:230px;top:800px;border-color:rgba(255,143,126,.5);color:var(--danger)">● linked to @you on X</div>
+    <div id="watch3" class="chip abs" style="left:1290px;top:800px;border-color:rgba(255,143,126,.5);color:var(--danger)">● your exchange account</div>
+    <div id="pixels" class="abs" style="inset:0"></div>
+  </div>
+
+  <!-- S2: brand -->
+  <div id="s2" class="abs" style="inset:0;display:grid;place-items:center">
+    <div style="text-align:center">
+      <div id="word" style="font:800 230px var(--font);letter-spacing:.24em;margin-right:-.24em"></div>
+      <div id="s2sub" style="margin-top:20px;font-size:40px;color:var(--text-2)">Privacy for Solana. Built on zero-knowledge proofs.</div>
+    </div>
+  </div>
+
+  <!-- S2b: what Vanish is -->
+  <div id="s2b" class="abs" style="inset:0">
+    <div id="wTitle" class="abs" style="left:0;right:0;top:100px;text-align:center;font-size:68px;font-weight:700;letter-spacing:-.02em">A privacy protocol for <span class="grad-text">Solana</span></div>
+    <div id="wTag" class="abs" style="left:0;right:0;top:198px;display:flex;justify-content:center"><span class="chip" style="font-size:26px">Same principle as <b style="margin-left:8px">Tornado Cash</b></span></div>
+    <div id="wPool" class="abs" style="left:820px;top:330px;width:280px;height:280px;border-radius:50%;padding:5px;background:var(--grad)">
+      <div style="width:100%;height:100%;border-radius:50%;background:var(--bg);display:grid;place-items:center;text-align:center">
+        <div><div style="font-size:34px;font-weight:700">Shared pool</div><div id="wNotes" class="mono" style="margin-top:10px;font-size:22px;color:var(--muted)">0 notes</div></div>
+      </div>
+    </div>
+    <div id="wProof" class="chip abs" style="left:792px;top:300px;font-size:26px;border:2px solid transparent;background:linear-gradient(var(--card),var(--card)) padding-box, var(--grad) border-box">π zero-knowledge proof</div>
+    <div id="wIn" class="abs" style="left:0;top:0"></div>
+    <div id="wOut" class="abs" style="left:0;top:0"></div>
+    <svg id="wLinks" class="abs" style="left:0;top:0" width="1920" height="1080"></svg>
+    <div id="wNoLink" class="abs" style="left:0;right:0;top:812px;display:flex;justify-content:center"><span class="chip" style="font-size:26px;border-color:rgba(255,143,126,.5);color:var(--danger)">✕ no link between who puts in and who takes out</span></div>
+    <div id="wDots" class="abs" style="inset:0"></div>
+  </div>
+
+  <!-- S3: shield -->
+  <div id="s3" class="abs" style="inset:0">
+    <div id="s3t" class="scene-title abs" style="left:150px;top:300px">
+      <div class="num">01</div><h2>Shield</h2>
+      <p>SOL, dollars or tokenized stocks into one zero-knowledge pool.</p>
+      <div class="row" style="gap:14px;margin-top:40px" id="s3chips">
+        <span class="chip"><img class="logo" style="width:34px;height:34px" src="SOL.png"/>SOL</span>
+        <span class="chip"><img class="logo" style="width:34px;height:34px" src="USDC.png"/>USDC</span>
+        <span class="chip"><img class="logo" style="width:34px;height:34px" src="NVDA.png"/>NVDAx</span>
+        <span class="chip"><img class="logo" style="width:34px;height:34px" src="SPY.png"/>SPYx</span>
+      </div>
+    </div>
+    <div id="s3card" class="card abs" style="left:1040px;top:150px;width:720px;padding:30px">
+      <div class="row" style="justify-content:space-between;margin-bottom:22px">
+        <span class="muted" style="font-size:22px">Private balance</span>
+        <span id="s3bal" class="mono" style="font-size:34px;font-weight:600">0.000 SOL</span>
+      </div>
+      <div class="tabs" style="margin-bottom:26px"><div class="tab on">Shield</div><div class="tab">Unshield</div><div class="tab">Swap</div><div class="tab">Buy</div></div>
+      <div class="label"><span>Asset</span><span>In wallet: 3.42 SOL</span></div>
+      <div class="field" style="margin-bottom:24px"><img class="logo" style="width:38px;height:38px" src="SOL.png"/>SOL <span class="muted" style="font-weight:500">Solana</span></div>
+      <div class="label"><span>Amount</span><span>Fixed sizes only</span></div>
+      <div class="denoms" style="margin-bottom:26px"><div class="denom">0.1</div><div class="denom" id="d1">1</div><div class="denom">5</div><div class="denom">20</div></div>
+      <div id="s3btn" class="btn">Shield 1 SOL</div>
+      <div id="s3prog" style="margin-top:24px">
+        <div style="height:10px;border-radius:5px;background:var(--field);overflow:hidden"><div id="s3bar" style="height:100%;width:0;background:var(--grad)"></div></div>
+        <div class="row" style="justify-content:space-between;margin-top:16px;font-size:21px">
+          <span id="st1">Read pool</span><span id="st2">Generate proof</span><span id="st3">Confirm</span>
+        </div>
+      </div>
+      <div id="s3ok" style="margin-top:20px;padding:18px 22px;border-radius:14px;background:rgba(95,208,138,.12);border-left:4px solid var(--ok);font-size:24px">✓ Shielded 1 SOL. Only your key can spend it.</div>
+    </div>
+  </div>
+
+  <!-- S4: swap -->
+  <div id="s4" class="abs" style="inset:0">
+    <div id="s4t" class="scene-title abs" style="left:150px;top:250px">
+      <div class="num">02</div><h2>Private swap</h2>
+      <p>Trade between assets without ever leaving the pool.</p>
+    </div>
+    <div id="s4card" class="card abs" style="left:1040px;top:110px;width:720px;padding:30px">
+      <div class="tabs" style="margin-bottom:24px"><div class="tab">Shield</div><div class="tab">Unshield</div><div class="tab on">Swap</div><div class="tab">Buy</div></div>
+      <div class="label"><span>From</span><span>Private: 5.000 SOL</span></div>
+      <div class="field" style="justify-content:space-between"><span class="row" style="gap:14px"><img class="logo" style="width:38px;height:38px" src="SOL.png"/>SOL</span><span id="s4amt" class="mono" style="font-size:32px">2</span></div>
+      <div style="display:grid;place-items:center;margin:14px 0"><div id="s4flip" style="width:54px;height:54px;border-radius:50%;background:var(--card-2);display:grid;place-items:center;font-size:26px">⇅</div></div>
+      <div class="label"><span>To</span><span>Stays private</span></div>
+      <div class="field" style="margin-bottom:22px"><img class="logo" style="width:38px;height:38px" src="NVDA.png"/>NVDAx <span class="muted" style="font-weight:500">NVIDIA · xStocks</span></div>
+      <dl class="sum" style="margin:0 0 22px">
+        <div><dt>You receive (exactly)</dt><dd><b id="s4out">0.0000 NVDAx</b></dd></div>
+        <div><dt>Route</dt><dd>Raydium CLMM → Whirlpool</dd></div>
+        <div><dt>If the price runs away</dt><dd>refunded privately</dd></div>
+      </dl>
+      <div id="s4btn" class="btn">Swap privately</div>
+      <div class="row" style="gap:12px;margin-top:20px;justify-content:center" id="s4proofs">
+        <span class="chip" style="font-size:20px">π refund</span><span class="chip" style="font-size:20px">π output</span><span class="chip" style="font-size:20px">π spend</span>
+      </div>
+    </div>
+    <div id="s4ledger" class="abs row" style="left:150px;top:690px;gap:24px">
+      <div class="card" style="width:400px;padding:24px 28px"><div class="muted" style="font:600 18px var(--mono);letter-spacing:.1em">SOLSCAN SEES</div><div style="font-size:24px;margin-top:12px;line-height:1.4">The Vanish pool sold 2 SOL, received NVDAx</div></div>
+      <div class="card" style="width:400px;padding:24px 28px"><div style="font:600 18px var(--mono);letter-spacing:.1em;color:var(--accent-text)">STAYS HIDDEN</div><div style="font-size:24px;margin-top:12px;line-height:1.4">Whose funds <span class="redact" style="width:120px"></span><br/>Your wallet: not in it</div></div>
+    </div>
+  </div>
+
+  <!-- S5: private buy -->
+  <div id="s5" class="abs" style="inset:0">
+    <div id="s5t" class="scene-title abs" style="left:150px;top:250px">
+      <div class="num">03</div><h2>Private buy</h2>
+      <p>Any token, even a fresh pump.fun launch. Delivered to a brand-new wallet.</p>
+    </div>
+    <div id="s5card" class="card abs" style="left:1040px;top:120px;width:720px;padding:30px">
+      <div class="tabs" style="margin-bottom:24px"><div class="tab">Shield</div><div class="tab">Unshield</div><div class="tab">Swap</div><div class="tab on">Buy</div></div>
+      <div class="label"><span>Token to buy</span><span>Paste the mint</span></div>
+      <div class="field mono" style="font-size:24px;font-weight:500"><span id="s5mint"></span><span id="s5caret" style="width:3px;height:34px;background:var(--text)"></span></div>
+      <div id="s5token" style="margin-top:18px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--field)">
+        <div style="height:110px;background:linear-gradient(120deg,#2a1a4a,#123b39)"></div>
+        <div class="row" style="gap:18px;padding:0 22px 18px;margin-top:-34px">
+          <div style="width:76px;height:76px;border-radius:50%;background:var(--grad);border:4px solid var(--field);display:grid;place-items:center;font:800 34px var(--font);color:#0d0b14">G</div>
+          <div style="flex:1;margin-top:30px"><div style="font-size:30px;font-weight:700">$GHOST</div><div class="muted" style="font-size:20px">Ghost · pump.fun</div></div>
+          <div style="text-align:right;margin-top:30px"><div class="mono" style="font-size:24px">$0.00041</div><div style="color:var(--ok);font-size:20px">+38% 24h</div></div>
+        </div>
+        <div class="row" style="border-top:1px solid var(--line)">
+          <div style="flex:1;padding:14px 22px"><div class="muted" style="font-size:17px">Market cap</div><div class="mono" style="font-size:22px">$4.2M</div></div>
+          <div style="flex:1;padding:14px 22px;border-left:1px solid var(--line)"><div class="muted" style="font-size:17px">Liquidity</div><div class="mono" style="font-size:22px">$310K</div></div>
+          <div style="flex:1;padding:14px 22px;border-left:1px solid var(--line)"><div class="muted" style="font-size:17px">Pair age</div><div class="mono" style="font-size:22px">3 days</div></div>
+        </div>
+      </div>
+      <div id="s5dest" class="field" style="margin-top:18px;justify-content:space-between;font-size:22px"><span class="muted">Deliver to</span><span class="mono" style="font-weight:500">new wallet F7re…k2P ✓</span></div>
+      <div id="s5btn" class="btn" style="margin-top:18px">Buy $GHOST privately</div>
+    </div>
+    <div id="s5flow" class="abs" style="inset:0">
+      <div id="nYou" class="node" style="left:200px;top:640px"><b>Your wallet</b><span>A1ic…9xQ</span></div>
+      <div id="nPool" class="node" style="left:780px;top:640px;border:2px solid transparent;background:linear-gradient(var(--card),var(--card)) padding-box, var(--grad) border-box"><b class="grad-text">Vanish pool</b><span>zero-knowledge</span></div>
+      <div id="nNew" class="node" style="left:1360px;top:640px"><b>Fresh wallet</b><span>F7re…k2P</span><div id="nNewRecv" style="margin-top:14px;font:700 28px var(--font);color:var(--ok)">+4,870,000 $GHOST</div></div>
+      <svg class="abs" style="left:0;top:0" width="1920" height="1080">
+        <path id="linkYouPool" d="M560 720 H780" stroke="rgba(255,255,255,.35)" stroke-width="3" fill="none" stroke-dasharray="10 10"/>
+        <path id="linkPoolNew" d="M1140 720 H1360" stroke="url(#g)" stroke-width="4" fill="none"/>
+        <path id="linkYouNew" d="M380 820 C 380 960, 1540 960, 1540 820" stroke="rgba(255,143,126,.6)" stroke-width="3" fill="none" stroke-dasharray="12 12"/>
+        <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#9945ff"/><stop offset="1" stop-color="#19fb9b"/></linearGradient></defs>
+      </svg>
+      <div id="noLink" class="chip abs" style="left:820px;top:900px;border-color:rgba(255,143,126,.5);color:var(--danger)">✕ no on-chain link</div>
+      <div id="tokens" class="abs" style="inset:0"></div>
+    </div>
+  </div>
+
+  <!-- S6: proofs -->
+  <div id="s6" class="abs" style="inset:0">
+    <div id="badge" class="abs" style="left:360px;top:150px;width:1200px;text-align:center">
+      <div style="width:220px;height:220px;margin:0 auto;border-radius:50%;padding:4px;background:var(--grad)"><div style="width:100%;height:100%;border-radius:50%;background:var(--bg);display:grid;place-items:center"><span class="grad-text" style="font:italic 700 130px Georgia,serif;line-height:1">π</span></div></div>
+      <div style="margin-top:28px;font-size:46px;font-weight:700">Proof verified on-chain</div>
+      <div id="eq" class="mono" style="margin-top:18px;font-size:28px;color:var(--text-2);min-height:40px;white-space:nowrap"></div>
+    </div>
+  </div>
+
+  <!-- S7: outro -->
+  <div id="s7" class="abs" style="inset:0;display:grid;place-items:center">
+    <div style="text-align:center">
+      <div id="word2" style="font:800 220px var(--font);letter-spacing:.24em;margin-right:-.24em"><span class="grad-text">VANISH</span></div>
+      <div id="tag" style="margin-top:16px;font-size:52px;font-weight:600">Shield. Swap. Buy. <span class="muted">Without a trail.</span></div>
+      <div id="url" class="row" style="justify-content:center;gap:22px;margin-top:46px">
+        <span class="chip mono" style="font-size:34px;padding:16px 34px;border:2px solid transparent;background:linear-gradient(var(--card),var(--card)) padding-box, var(--grad) border-box">vanish.website</span>
+        <span class="chip" style="font-size:26px"><img class="logo" style="width:34px;height:34px" src="SOL.png"/>Built on Solana</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="caption"></div>
+  <div id="fade" class="abs" style="inset:0;background:#000;pointer-events:none"></div>
+</div>
+
+<script>
+// ------------------------------------------------------------------ timing (from the measured narration)
+const LINES = window.LINES ?? [
+  { id: "open", start: 0.4, dur: 5.92, text: "Every wallet on Solana is an open book. Anyone can see what you hold, and every trade you make." },
+  { id: "brand", start: 6.8, dur: 1.84, text: "Vanish changes that." },
+  { id: "what", start: 9.3, dur: 12.86, text: "Vanish is a privacy protocol for Solana, built on the same principle as Tornado Cash. Everyone deposits into one shared pool, and zero-knowledge proofs break the link between who puts money in, and who takes it out." },
+  { id: "shield", start: 23.0, dur: 5.44, text: "Shield Solana, dollars or tokenized stocks into the pool. Only your key can ever spend them." },
+  { id: "swap", start: 30.0, dur: 7.10, text: "Swap privately, right inside the pool. Solana into NVIDIA, dollars into stocks. Your wallet never appears." },
+  { id: "buy", start: 38.7, dur: 6.93, text: "Or buy any token, even a fresh pump.fun launch, and receive it in a brand-new wallet with no link back to you." },
+  { id: "proof", start: 46.1, dur: 4.29, text: "Every action is a proof, checked on-chain. No one can freeze your funds." },
+  { id: "outro", start: 51.1, dur: 5.20, text: "Vanish. Shield, swap and buy, without a trail. Try it at vanish.website" },
+];
+// everything from the Shield scene on runs SHIFT seconds later than originally designed
+const SHIFT = 13.7;
+const DURATION = 57.5;
+
+// ------------------------------------------------------------------ helpers
+const $ = (id) => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const outBack = (x) => { const c = 1.6; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const prog = (t, a, b) => ease(clamp((t - a) / (b - a)));
+/** 0 → 1 over [a,b], 1 → 0 over [c,d] */
+const win = (t, a, b, c, d) => (t < c ? prog(t, a, b) : 1 - prog(t, c, d));
+function style(el, { o = 1, x = 0, y = 0, s = 1, blur = 0, rot = 0 } = {}) {
+  el.style.opacity = o;
+  el.style.transform = `translate(${x}px, ${y}px) scale(${s}) rotate(${rot}deg)`;
+  el.style.filter = blur ? `blur(${blur}px)` : "none";
+  el.style.visibility = o <= 0.001 ? "hidden" : "visible";
+}
+/** element enters (fade + rise) at a, leaves at c */
+function enter(el, t, a, c = 1e9, { dy = 40, dur = 0.7, out = 0.5 } = {}) {
+  const i = prog(t, a, a + dur), o = 1 - prog(t, c, c + out);
+  style(el, { o: Math.min(i, o), y: (1 - i) * dy - (1 - o) * 20, blur: (1 - i) * 8 });
+}
+function seeded(n) { let s = n; return () => ((s = (s * 16807) % 2147483647) / 2147483647); }
+const fmt = (v, d) => v.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+
+// ------------------------------------------------------------------ one-time setup
+const rand = seeded(7);
+const COLORS = ["#9945ff", "#8752f3", "#5497d5", "#43b4ca", "#28e0b9", "#19fb9b", "#2a2e35", "#1f2227"];
+const PIX = [];
+for (let r = 0; r < 11; r++) for (let c = 0; c < 30; c++) {
+  const el = document.createElement("div");
+  el.className = "px";
+  el.style.left = 310 + c * 43.3 + "px";
+  el.style.top = 300 + r * 43 + "px";
+  el.style.background = COLORS[Math.floor(rand() * COLORS.length)];
+  $("pixels").appendChild(el);
+  PIX.push({ el, vx: (rand() - 0.5) * 1400, vy: (rand() - 0.8) * 900, rot: (rand() - 0.5) * 360, delay: (c / 30) * 0.5 + rand() * 0.25 });
+}
+const TOK = [];
+for (let i = 0; i < 26; i++) {
+  const el = document.createElement("div");
+  el.style.cssText = "position:absolute;width:22px;height:22px;border-radius:50%;background:var(--grad);box-shadow:0 0 18px rgba(25,251,155,.55)";
+  $("tokens").appendChild(el);
+  TOK.push({ el, delay: i * 0.075, wob: rand() * Math.PI * 2 });
+}
+// 3 x 2 grid, centred under the badge
+const GUARANTEES = ["Non-custodial", "Terms sealed in every proof", "Withdrawals can't be paused", "Routes can't touch the pool", "Nothing gets stuck", "No trail to your wallet"];
+for (const [i, text] of GUARANTEES.entries()) {
+  const el = document.createElement("div");
+  el.className = "guarantee";
+  el.style.left = 210 + (i % 3) * 520 + "px"; el.style.top = 650 + Math.floor(i / 3) * 110 + "px"; el.style.width = "460px"; el.style.justifyContent = "center";
+  el.innerHTML = `<span class="tick">✓</span>${text}`;
+  $("s6").appendChild(el);
+}
+const GEL = [...document.querySelectorAll("#s6 .guarantee")];
+// S2b: four depositors -> pool -> four different withdrawers
+const DEP = [["A1ic…9xQ", "+1 SOL"], ["7xKp…Q2vR", "+5 SOL"], ["Hn3d…pL1", "+100 USDC"], ["Qw9e…Zt4", "+1 SOL"]];
+const WDR = [["F7re…k2P", "0.7 SOL"], ["9fTe…4mWa", "60 USDC"], ["Bx2s…Rk8", "3.2 SOL"], ["Lm5v…aQ3", "1.1 SOL"]];
+const wallet = (parent, [addr, amt], x, y) => {
+  const el = document.createElement("div");
+  el.className = "chip abs";
+  el.style.cssText += `left:${x}px;top:${y}px;width:330px;justify-content:space-between;font-size:23px`;
+  el.innerHTML = `<span class="mono" style="font-weight:500">${addr}</span><span>${amt}</span>`;
+  parent.appendChild(el);
+  return el;
+};
+const WIN = DEP.map((w, i) => wallet($("wIn"), w, 250, 340 + i * 76));
+const WOUT = WDR.map((w, i) => wallet($("wOut"), w, 1340, 340 + i * 76));
+const DOTS2 = [];
+for (let i = 0; i < 40; i++) {
+  const el = document.createElement("div");
+  el.style.cssText = "position:absolute;width:16px;height:16px;border-radius:50%;background:var(--grad);box-shadow:0 0 14px rgba(153,69,255,.6)";
+  $("wDots").appendChild(el);
+  DOTS2.push({ el, lane: i % 4, delay: Math.floor(i / 4) * 0.12 + (i % 4) * 0.05 });
+}
+// dashed "would-be" links from each depositor to a withdrawer, crossed out by the proof
+const PAIRS = [[0, 2], [1, 0], [2, 3], [3, 1]];
+const laneY = (i) => 340 + i * 76 + 26;
+const bez = (p0, p1, p2, p3, u) => (1 - u) ** 3 * p0 + 3 * (1 - u) ** 2 * u * p1 + 3 * (1 - u) * u * u * p2 + u ** 3 * p3;
+$("wLinks").innerHTML = PAIRS.map(([a, b]) => {
+  const y1 = laneY(a), y2 = laneY(b);
+  return `<path class="wl" d="M580 ${y1} C 900 ${y1 + 300}, 1020 ${y2 + 300}, 1340 ${y2}" stroke="rgba(255,143,126,.55)" stroke-width="3" fill="none" stroke-dasharray="10 10"/>`;
+}).join("") + PAIRS.map(([a, b]) => {
+  // the cross sits exactly on each link's midpoint
+  const y1 = laneY(a), y2 = laneY(b);
+  const mx = bez(580, 900, 1020, 1340, 0.5), my = bez(y1, y1 + 300, y2 + 300, y2, 0.5);
+  return `<text class="wx" x="${mx}" y="${my + 12}" text-anchor="middle" fill="#ff8f7e" font-size="36" font-weight="800" font-family="Manrope">✕</text>`;
+}).join("");
+const WORD = "VANISH";
+$("word").innerHTML = WORD.split("").map((ch) => `<span class="grad-text" style="display:inline-block">${ch}</span>`).join("");
+const LETTERS = [...$("word").children];
+
+// ------------------------------------------------------------------ the frame
+function renderAt(t) {
+  // background drift
+  $("dots").style.backgroundPosition = `${t * 7}px ${t * 4}px`;
+  style($("glowA"), { x: 200 + Math.sin(t * 0.25) * 260 - 450, y: -260 + Math.cos(t * 0.2) * 120 });
+  style($("glowB"), { x: 1300 + Math.cos(t * 0.22) * 240, y: 520 + Math.sin(t * 0.3) * 140 });
+  style($("corner"), { o: win(t, 9.0, 9.8, 36.8 + SHIFT, 37.4 + SHIFT) * 0.9 });
+
+  // S1 ------------------------------------------------------------
+  const s1 = t < 8;
+  $("s1").style.display = s1 ? "block" : "none";
+  if (s1) {
+    enter($("s1h"), t, 0.15, 5.6);
+    const exIn = prog(t, 0.5, 1.3), exOut = prog(t, 5.9, 6.25);
+    style($("explorer"), { o: exIn * (1 - exOut), y: (1 - exIn) * 50, s: 0.97 + 0.03 * exIn });
+    [...document.querySelectorAll("#explorer .h")].forEach((el, i) => enter(el, t, 1.3 + i * 0.28, 1e9, { dy: 16, dur: 0.45 }));
+    [...document.querySelectorAll("#explorer .a")].forEach((el, i) => enter(el, t, 2.0 + i * 0.32, 1e9, { dy: 16, dur: 0.45 }));
+    ["watch1", "watch2", "watch3"].forEach((id, i) => {
+      const a = 3.4 + i * 0.45, p = prog(t, a, a + 0.5), out = prog(t, 5.7, 6.1);
+      style($(id), { o: p * (1 - out), s: 0.85 + 0.15 * outBack(clamp((t - a) / 0.5)) });
+    });
+    for (const p of PIX) {
+      const k = clamp((t - 5.95 - p.delay) / 1.4);
+      if (t < 5.9) { p.el.style.opacity = 0; continue; }
+      const e = 1 - Math.pow(1 - k, 2);
+      p.el.style.opacity = (t < 5.95 + p.delay ? 1 : 1 - k) * 0.95;
+      p.el.style.transform = `translate(${p.vx * e}px, ${p.vy * e + 600 * k * k * 0.4}px) rotate(${p.rot * e}deg) scale(${1 - 0.6 * k})`;
+    }
+  }
+
+  // S2 ------------------------------------------------------------
+  const s2 = t > 6.2 && t < 9.6;
+  $("s2").style.display = s2 ? "grid" : "none";
+  if (s2) {
+    LETTERS.forEach((el, i) => {
+      const a = 6.6 + i * 0.09, p = prog(t, a, a + 0.55);
+      style(el, { o: p, y: (1 - p) * 60, blur: (1 - p) * 16, s: 0.9 + 0.1 * p });
+    });
+    const out = prog(t, 8.8, 9.35);
+    $("word").style.opacity = 1 - out;
+    $("word").style.transform = `scale(${1 - 0.25 * out}) translateY(${-120 * out}px)`;
+    enter($("s2sub"), t, 7.5, 8.75);
+  }
+
+  // S2b what Vanish is --------------------------------------------------
+  const s2b = t > 8.9 && t < 23.2;
+  $("s2b").style.display = s2b ? "block" : "none";
+  if (s2b) {
+    const out = prog(t, 22.3, 22.9);
+    const fadeOut = (el) => { el.style.opacity = String(Number(el.style.opacity || 1) * (1 - out)); };
+    enter($("wTitle"), t, 9.2);
+    const tag = clamp((t - 12.0) / 0.5);
+    style($("wTag"), { o: ease(tag), s: 0.85 + 0.15 * outBack(tag) });
+    const pool = prog(t, 9.8, 10.6);
+    const pulse = 1 + 0.03 * Math.sin(t * 3) * prog(t, 15.5, 16);
+    style($("wPool"), { o: pool, s: (0.85 + 0.15 * pool) * pulse });
+    WIN.forEach((el, i) => enter(el, t, 10.4 + i * 0.25, 1e9, { dy: 0, dur: 0.5 }));
+    WIN.forEach((el, i) => { el.style.transform = `translateX(${(1 - prog(t, 10.4 + i * 0.25, 10.9 + i * 0.25)) * -60}px)`; });
+    const notes = Math.round(clamp((t - 15.9) / 1.9) * 4);
+    $("wNotes").textContent = `${notes} note${notes === 1 ? "" : "s"}`;
+    // deposits fly in, withdrawals fly out
+    for (const d of DOTS2) {
+      const pin = clamp((t - 15.5 - d.delay) / 0.9), pout = clamp((t - 19.4 - d.delay) / 0.9);
+      const yL = 366 + d.lane * 76, yR = 366 + ((d.lane + 2) % 4) * 76;
+      let x, y, o;
+      if (pin < 1) { x = 580 + pin * 240; y = yL + (470 - yL) * pin; o = pin > 0 ? Math.sin(pin * Math.PI) : 0; }
+      else { x = 1100 + pout * 240; y = 470 + (yR - 470) * pout; o = pout > 0 && pout < 1 ? Math.sin(pout * Math.PI) : 0; }
+      d.el.style.opacity = o;
+      d.el.style.transform = `translate(${x - 8}px, ${y - 8}px)`;
+    }
+    const proof = clamp((t - 18.3) / 0.5);
+    style($("wProof"), { o: ease(proof), s: 0.85 + 0.15 * outBack(proof) });
+    WOUT.forEach((el, i) => {
+      const p = prog(t, 19.9 + i * 0.25, 20.4 + i * 0.25);
+      el.style.opacity = p;
+      el.style.visibility = p > 0.001 ? "visible" : "hidden";
+      el.style.transform = `translateX(${(1 - p) * 60}px)`;
+    });
+    [...document.querySelectorAll("#wLinks .wl")].forEach((el, i) => { el.style.opacity = prog(t, 20.4 + i * 0.08, 20.8 + i * 0.08) * 0.9; });
+    [...document.querySelectorAll("#wLinks .wx")].forEach((el, i) => { el.style.opacity = prog(t, 20.9 + i * 0.12, 21.2 + i * 0.12); });
+    const nl = clamp((t - 21.0) / 0.5);
+    style($("wNoLink"), { o: ease(nl), y: (1 - ease(nl)) * 20 });
+    for (const el of [$("wTitle"), $("wTag"), $("wPool"), $("wProof"), $("wNoLink"), $("wIn"), $("wOut"), $("wLinks"), $("wDots")]) fadeOut(el);
+  }
+
+  renderLater(t - SHIFT);
+
+  // captions -----------------------------------------------------------
+  const line = LINES.find((l) => t >= l.start - 0.1 && t <= l.start + l.dur + 0.35);
+  const cap = $("caption");
+  if (line) {
+    cap.textContent = line.text;
+    const o = Math.min(prog(t, line.start - 0.1, line.start + 0.2), 1 - prog(t, line.start + line.dur + 0.05, line.start + line.dur + 0.35));
+    cap.style.opacity = o;
+    // long lines shrink to fit one line
+    cap.style.fontSize = line.text.length > 130 ? "27px" : line.text.length > 80 ? "29px" : "34px";
+    cap.style.whiteSpace = line.text.length > 130 ? "normal" : "nowrap";
+    cap.style.width = line.text.length > 130 ? "1700px" : "auto";
+    cap.style.maxWidth = line.text.length > 130 ? "1700px" : "1500px";
+  } else cap.style.opacity = 0;
+
+  // fade in / out
+  $("fade").style.opacity = Math.max(1 - prog(t, 0, 0.5), prog(t, DURATION - 0.8, DURATION));
+}
+/** The Shield .. outro scenes, on their original timeline (called with t - SHIFT). */
+function renderLater(t) {
+  // S3 shield --------------------------------------------------------
+  const s3 = t > 8.9 && t < 16.8;
+  $("s3").style.display = s3 ? "block" : "none";
+  if (s3) {
+    enter($("s3t"), t, 9.1, 15.9);
+    [...$("s3chips").children].forEach((el, i) => enter(el, t, 10.0 + i * 0.18, 15.9, { dy: 20, dur: 0.4 }));
+    const cIn = prog(t, 9.3, 10.1), cOut = prog(t, 15.9, 16.4);
+    style($("s3card"), { o: cIn * (1 - cOut), x: (1 - cIn) * 120 - cOut * 80 });
+    $("d1").className = t > 10.7 ? "denom on" : "denom";
+    const press = clamp(1 - Math.abs(t - 11.35) / 0.15);
+    $("s3btn").style.transform = `scale(${1 - 0.04 * press})`;
+    $("s3prog").style.opacity = prog(t, 11.4, 11.7);
+    $("s3bar").style.width = `${clamp((t - 11.5) / 2.6) * 100}%`;
+    ["st1", "st2", "st3"].forEach((id, i) => {
+      const done = t > 11.9 + i * 1.0;
+      $(id).style.color = done ? "var(--ok)" : t > 11.5 + i * 1.0 ? "var(--text)" : "var(--muted)";
+      $(id).textContent = (done ? "✓ " : "") + ["Read pool", "Generate proof", "Confirm"][i];
+    });
+    enter($("s3ok"), t, 14.25, 1e9, { dy: 14, dur: 0.4 });
+    const bal = clamp((t - 14.2) / 0.8);
+    $("s3bal").textContent = `${fmt(ease(bal) * 1, 3)} SOL`;
+    $("s3bal").style.color = bal > 0 ? "var(--ok)" : "var(--text)";
+  }
+
+  // S4 swap -----------------------------------------------------------
+  const s4 = t > 15.8 && t < 25.4;
+  $("s4").style.display = s4 ? "block" : "none";
+  if (s4) {
+    enter($("s4t"), t, 16.1, 24.6);
+    const cIn = prog(t, 16.2, 17.0), cOut = prog(t, 24.6, 25.1);
+    style($("s4card"), { o: cIn * (1 - cOut), x: (1 - cIn) * 120 - cOut * 80 });
+    $("s4amt").textContent = t > 17.4 ? "2" : "";
+    $("s4flip").style.transform = `rotate(${prog(t, 17.6, 18.2) * 180}deg)`;
+    $("s4out").textContent = `${fmt(ease(clamp((t - 18.0) / 0.9)) * 0.0973, 4)} NVDAx`;
+    const press = clamp(1 - Math.abs(t - 19.5) / 0.15);
+    $("s4btn").style.transform = `scale(${1 - 0.04 * press})`;
+    [...$("s4proofs").children].forEach((el, i) => {
+      const on = t > 19.8 + i * 0.55;
+      el.style.borderColor = on ? "rgba(95,208,138,.6)" : "var(--line)";
+      el.style.color = on ? "var(--ok)" : "var(--muted)";
+      el.textContent = (on ? "✓ " : "") + ["π refund", "π output", "π spend"][i];
+    });
+    $("s4btn").textContent = t > 21.6 ? "✓ Swapped 2 SOL → 0.0973 NVDAx" : "Swap privately";
+    $("s4btn").style.background = t > 21.6 ? "rgba(95,208,138,.16)" : "var(--grad)";
+    $("s4btn").style.color = t > 21.6 ? "var(--ok)" : "#0d0b14";
+    enter($("s4ledger"), t, 21.9, 24.6, { dy: 30 });
+  }
+
+  // S5 buy ------------------------------------------------------------
+  const s5 = t > 24.6 && t < 32.9;
+  $("s5").style.display = s5 ? "block" : "none";
+  if (s5) {
+    enter($("s5t"), t, 24.9, 28.4);
+    const cIn = prog(t, 25.0, 25.8), cOut = prog(t, 28.4, 28.9);
+    style($("s5card"), { o: cIn * (1 - cOut), x: (1 - cIn) * 120, y: -cOut * 60, s: 1 - 0.05 * cOut });
+    const MINT = "GHoSt7…aR9xpump";
+    $("s5mint").textContent = MINT.slice(0, Math.floor(clamp((t - 25.6) / 0.9) * MINT.length));
+    $("s5caret").style.opacity = t < 26.6 && Math.floor(t * 2.5) % 2 === 0 ? 1 : 0;
+    enter($("s5token"), t, 26.55, 1e9, { dy: 20, dur: 0.5 });
+    enter($("s5dest"), t, 27.2, 1e9, { dy: 14, dur: 0.4 });
+    enter($("s5btn"), t, 27.5, 1e9, { dy: 14, dur: 0.4 });
+    $("s5btn").style.transform += ` scale(${1 - 0.04 * clamp(1 - Math.abs(t - 28.15) / 0.15)})`;
+    // flow diagram
+    const fIn = prog(t, 28.6, 29.3), fOut = prog(t, 31.9, 32.4);
+    style($("s5flow"), { o: fIn * (1 - fOut) });
+    style($("nYou"), { o: fIn * 0.55, y: (1 - fIn) * 30 });
+    style($("nPool"), { o: fIn, y: (1 - fIn) * 30 });
+    style($("nNew"), { o: fIn, y: (1 - fIn) * 30 });
+    for (const k of TOK) {
+      const p = clamp((t - 29.2 - k.delay) / 0.9);
+      const vis = p > 0 && p < 1;
+      k.el.style.opacity = vis ? Math.sin(p * Math.PI) : 0;
+      k.el.style.transform = `translate(${1120 + p * 250}px, ${708 + Math.sin(p * Math.PI * 2 + k.wob) * 26}px)`;
+    }
+    $("nNewRecv").style.opacity = prog(t, 30.1, 30.5);
+    $("linkYouNew").style.opacity = prog(t, 30.4, 30.9);
+    style($("noLink"), { o: prog(t, 30.6, 31.0), s: 0.85 + 0.15 * outBack(clamp((t - 30.6) / 0.45)) });
+  }
+
+  // S6 proofs ---------------------------------------------------------
+  const s6 = t > 32.1 && t < 37.6;
+  $("s6").style.display = s6 ? "block" : "none";
+  if (s6) {
+    const b = prog(t, 32.3, 33.0), bo = prog(t, 36.9, 37.4);
+    style($("badge"), { o: b * (1 - bo), s: (0.8 + 0.2 * outBack(clamp((t - 32.3) / 0.7))) * (1 - 0.06 * bo) });
+    const EQ = "e(−A, B) · e(vkₓ, γ) · e(C, δ) · e(α, β) = 1";
+    $("eq").textContent = EQ.slice(0, Math.floor(clamp((t - 33.0) / 1.1) * EQ.length));
+    GEL.forEach((el, i) => {
+      const a = 33.5 + i * 0.32, p = clamp((t - a) / 0.45), o = 1 - prog(t, 36.9, 37.3);
+      style(el, { o: ease(p) * o, s: 0.8 + 0.2 * outBack(p), y: (1 - ease(p)) * 20 });
+    });
+  }
+
+  // S7 outro ----------------------------------------------------------
+  const s7 = t > 37.0;
+  $("s7").style.display = s7 ? "grid" : "none";
+  if (s7) {
+    const w = prog(t, 37.3, 38.2);
+    style($("word2"), { o: w, s: 1.12 - 0.12 * w, blur: (1 - w) * 18 });
+    enter($("tag"), t, 38.4, 1e9, { dy: 24 });
+    enter($("url"), t, 39.3, 1e9, { dy: 24 });
+  }
+
+}
+window.renderAt = renderAt;
+window.DURATION = DURATION;
+
+// preview: ?play animates in real time
+if (location.search.includes("play")) {
+  const t0 = performance.now();
+  const loop = () => { renderAt(((performance.now() - t0) / 1000) % DURATION); requestAnimationFrame(loop); };
+  document.fonts.ready.then(loop);
+} else {
+  renderAt(Number(new URLSearchParams(location.search).get("t") ?? 0));
+}
+</script>
+</body>
+</html>

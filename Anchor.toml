@@ -1,0 +1,21 @@
+[toolchain]
+anchor_version = "0.31.1"
+solana_version = "4.3.0"
+
+[features]
+resolution = true
+skip-lint = false
+
+[programs.localnet]
+solmix = "92DHWjMnbgcBdEmQ3hWoiJthFbP6Bk5e513pZAsQqoUG"
+mock_swap = "9rX8mRUjYP6yugEcM9DtzZriTDaRheNQuPHQeSk4f1uB"
+
+[programs.mainnet]
+solmix = "92DHWjMnbgcBdEmQ3hWoiJthFbP6Bk5e513pZAsQqoUG"
+
+[provider]
+cluster = "localnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "bash scripts/localnet-test.sh"

@@ -1,0 +1,12 @@
+{
+  "denominations": {
+    "ETH": ["0.01", "0.1", "0.5", "1"],
+    "USDG": ["10", "100", "500", "1000"],
+    "STOCK": ["1", "10", "50", "100"]
+  },
+  "rhMainnet": {
+    "USDG": "0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168",
+    "stocks": ["NVDA", "TSLA", "AAPL", "MSFT", "AMZN", "META", "GOOGL", "AMD", "PLTR", "COIN", "SPCX", "SPY", "QQQ"]
+  },
+  "mockStocks": ["NVDA", "TSLA", "SPY"]
+}

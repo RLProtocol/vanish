@@ -1,0 +1,41 @@
+{
+  "AAPL": {
+    "mono": true
+  },
+  "COIN": {
+    "mono": false
+  },
+  "HOOD": {
+    "mono": false
+  },
+  "MSTR": {
+    "mono": false
+  },
+  "NVDA": {
+    "mono": false
+  },
+  "QQQ": {
+    "mono": true
+  },
+  "SOL": {
+    "mono": false
+  },
+  "SPCX": {
+    "mono": true
+  },
+  "SPY": {
+    "mono": false
+  },
+  "TSLA": {
+    "mono": false
+  },
+  "USDC": {
+    "mono": false
+  },
+  "USDG": {
+    "mono": false
+  },
+  "USDT": {
+    "mono": false
+  }
+}

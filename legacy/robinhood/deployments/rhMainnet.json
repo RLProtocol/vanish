@@ -1,0 +1,85 @@
+{
+  "network": "rhMainnet",
+  "chainId": 4663,
+  "pool": "0xA52573C46fC04B56d161B1EF497dFA4Bf3ca65aA",
+  "verifier": "0xB776926130e0593A3249A7748Ea550E0FD524B59",
+  "hasher": "0x4B3642b8E637eeb8f4B06F899467Bdd12D8c0482",
+  "deployBlock": 72084247,
+  "assets": {
+    "ETH": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "decimals": 18,
+      "kind": "ETH"
+    },
+    "USDG": {
+      "address": "0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168",
+      "decimals": 6,
+      "kind": "USDG"
+    },
+    "NVDA": {
+      "address": "0xd0601CE157Db5bdC3162BbaC2a2C8aF5320D9EEC",
+      "decimals": 18,
+      "kind": "STOCK"
+    },
+    "TSLA": {
+      "address": "0x322F0929c4625eD5bAd873c95208D54E1c003b2d",
+      "decimals": 18,
+      "kind": "STOCK"
+    },
+    "AAPL": {
+      "address": "0xaF3D76f1834A1d425780943C99Ea8A608f8a93f9",
+      "decimals": 18,
+      "kind": "STOCK"
+    },
+    "MSFT": {
+      "address": "0xe93237C50D904957Cf27E7B1133b510C669c2e74",
+      "decimals": 18,
+      "kind": "STOCK"
+    },
+    "AMZN": {
+      "address": "0x12f190a9F9d7D37a250758b26824B97CE941bF54",
+      "decimals": 18,
+      "kind": "STOCK"
+    },
+    "META": {
+      "address": "0xc0D6457C16Cc70d6790Dd43521C899C87ce02f35",
+      "decimals": 18,
+      "kind": "STOCK"
+    },
+    "GOOGL": {
+      "address": "0x2e0847E8910a9732eB3fb1bb4b70a580ADAD4FE3",
+      "decimals": 18,
+      "kind": "STOCK"
+    },
+    "AMD": {
+      "address": "0x86923f96303D656E4aa86D9d42D1e57ad2023fdC",
+      "decimals": 18,
+      "kind": "STOCK"
+    },
+    "PLTR": {
+      "address": "0x894E1EC2D74FFE5AEF8Dc8A9e84686acCB964F2A",
+      "decimals": 18,
+      "kind": "STOCK"
+    },
+    "COIN": {
+      "address": "0x6330D8C3178a418788dF01a47479c0ce7CCF450b",
+      "decimals": 18,
+      "kind": "STOCK"
+    },
+    "SPCX": {
+      "address": "0x4a0E65A3EcceC6dBe60AE065F2e7bb85Fae35eEa",
+      "decimals": 18,
+      "kind": "STOCK"
+    },
+    "SPY": {
+      "address": "0x117cc2133c37B721F49dE2A7a74833232B3B4C0C",
+      "decimals": 18,
+      "kind": "STOCK"
+    },
+    "QQQ": {
+      "address": "0xD5f3879160bc7c32ebb4dC785F8a4F505888de68",
+      "decimals": 18,
+      "kind": "STOCK"
+    }
+  }
+}

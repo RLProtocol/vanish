@@ -1,0 +1,2819 @@
+{
+  "address": "DJVQZmkxNGhhETMivj7U9curexRvNGeN3DesLBwfY6YS",
+  "metadata": {
+    "name": "solmix",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Shielded pool for SOL, stablecoins and tokenized stocks on Solana"
+  },
+  "instructions": [
+    {
+      "name": "add_sol_asset",
+      "docs": [
+        "Lists native SOL with the given deposit sizes (lamports)."
+      ],
+      "discriminator": [
+        118,
+        33,
+        127,
+        71,
+        67,
+        213,
+        125,
+        23
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "pool",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "asset",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  115,
+                  115,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "const",
+                "value": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "denominations",
+          "type": {
+            "vec": "u64"
+          }
+        }
+      ]
+    },
+    {
+      "name": "add_token_asset",
+      "docs": [
+        "Lists an SPL / Token-2022 mint and creates the pool's vault for it."
+      ],
+      "discriminator": [
+        17,
+        191,
+        18,
+        230,
+        45,
+        67,
+        193,
+        240
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "pool",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "asset",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  115,
+                  115,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "pool"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "denominations",
+          "type": {
+            "vec": "u64"
+          }
+        }
+      ]
+    },
+    {
+      "name": "buy_cancel",
+      "docs": [
+        "Unwinds a buy: the input goes to the destination wallet instead."
+      ],
+      "discriminator": [
+        224,
+        97,
+        58,
+        236,
+        201,
+        135,
+        213,
+        204
+      ],
+      "accounts": [
+        {
+          "name": "caller",
+          "signer": true
+        },
+        {
+          "name": "order",
+          "writable": true
+        },
+        {
+          "name": "relayer",
+          "writable": true
+        },
+        {
+          "name": "destination",
+          "writable": true,
+          "relations": [
+            "order"
+          ]
+        },
+        {
+          "name": "escrow_mint_in"
+        },
+        {
+          "name": "escrow_in",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "order"
+              },
+              {
+                "kind": "account",
+                "path": "token_program_in"
+              },
+              {
+                "kind": "account",
+                "path": "escrow_mint_in"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "destination_token_in",
+          "docs": [
+            "Token input only: the destination's account for the input asset (create it idempotently beforehand)."
+          ],
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "token_program_in"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "buy_execute",
+      "docs": [
+        "Runs the aggregator route; at least min_out must reach the destination."
+      ],
+      "discriminator": [
+        106,
+        199,
+        85,
+        31,
+        248,
+        7,
+        173,
+        245
+      ],
+      "accounts": [
+        {
+          "name": "relayer",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "order"
+          ]
+        },
+        {
+          "name": "pool",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "order",
+          "writable": true
+        },
+        {
+          "name": "sol_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "escrow_mint_in"
+        },
+        {
+          "name": "escrow_in",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "order"
+              },
+              {
+                "kind": "account",
+                "path": "token_program_in"
+              },
+              {
+                "kind": "account",
+                "path": "escrow_mint_in"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "vault_in",
+          "docs": [
+            "Pool vault for the input asset (token assets only): receives whatever the route didn't spend."
+          ],
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "destination",
+          "writable": true,
+          "relations": [
+            "order"
+          ]
+        },
+        {
+          "name": "mint_out"
+        },
+        {
+          "name": "destination_token",
+          "docs": [
+            "The destination's token account for the bought token (create it idempotently beforehand)."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "destination"
+              },
+              {
+                "kind": "account",
+                "path": "token_program_out"
+              },
+              {
+                "kind": "account",
+                "path": "mint_out"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "order_token_out",
+          "docs": [
+            "The order's own account for the bought token, when the route references it. Anything the",
+            "route leaves there is swept to the destination, then it is closed (rent to the relayer)."
+          ],
+          "writable": true,
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "order"
+              },
+              {
+                "kind": "account",
+                "path": "token_program_out"
+              },
+              {
+                "kind": "account",
+                "path": "mint_out"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "token_program_in"
+        },
+        {
+          "name": "token_program_out"
+        },
+        {
+          "name": "swap_program",
+          "address": "JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "route_data",
+          "type": "bytes"
+        }
+      ]
+    },
+    {
+      "name": "buy_open",
+      "docs": [
+        "Spends notes into a buy order for any routable token, delivered to `terms.destination`."
+      ],
+      "discriminator": [
+        246,
+        183,
+        18,
+        246,
+        91,
+        0,
+        181,
+        109
+      ],
+      "accounts": [
+        {
+          "name": "relayer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "pool",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "asset_in",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  115,
+                  115,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "asset_in.mint",
+                "account": "Asset"
+              }
+            ]
+          }
+        },
+        {
+          "name": "order",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  121
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "order_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "nullifier0",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  117,
+                  108,
+                  108,
+                  105,
+                  102,
+                  105,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "tx.input_nullifiers [0]"
+              }
+            ]
+          }
+        },
+        {
+          "name": "nullifier1",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  117,
+                  108,
+                  108,
+                  105,
+                  102,
+                  105,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "tx.input_nullifiers [1]"
+              }
+            ]
+          }
+        },
+        {
+          "name": "relayer_fee_account",
+          "writable": true
+        },
+        {
+          "name": "sol_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "escrow_mint_in"
+        },
+        {
+          "name": "escrow_in",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "order"
+              },
+              {
+                "kind": "account",
+                "path": "token_program_in"
+              },
+              {
+                "kind": "account",
+                "path": "escrow_mint_in"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "vault_in",
+          "docs": [
+            "Pool vault for the input asset (token assets only)."
+          ],
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "token_program_in"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "order_id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "terms",
+          "type": {
+            "defined": {
+              "name": "BuyTerms"
+            }
+          }
+        },
+        {
+          "name": "tx",
+          "type": {
+            "defined": {
+              "name": "TransactArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "initialize",
+      "docs": [
+        "Creates the pool (Merkle tree + admin) and funds the SOL vault's rent."
+      ],
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "pool",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "sol_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "set_admin",
+      "discriminator": [
+        251,
+        163,
+        0,
+        52,
+        91,
+        194,
+        187,
+        92
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true
+        },
+        {
+          "name": "pool",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "new_admin",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "set_asset",
+      "docs": [
+        "Changes deposit sizes and/or pauses deposits. Withdrawals are never affected."
+      ],
+      "discriminator": [
+        243,
+        216,
+        48,
+        30,
+        63,
+        58,
+        91,
+        239
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "signer": true
+        },
+        {
+          "name": "pool",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "asset",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  115,
+                  115,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "asset.mint",
+                "account": "Asset"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "denominations",
+          "type": {
+            "option": {
+              "vec": "u64"
+            }
+          }
+        },
+        {
+          "name": "paused",
+          "type": {
+            "option": "bool"
+          }
+        }
+      ]
+    },
+    {
+      "name": "swap_cancel",
+      "docs": [
+        "Unwinds an order; if it was opened, the refund notes are credited."
+      ],
+      "discriminator": [
+        150,
+        103,
+        72,
+        249,
+        8,
+        127,
+        157,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "caller",
+          "signer": true
+        },
+        {
+          "name": "pool",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "order",
+          "writable": true
+        },
+        {
+          "name": "relayer",
+          "writable": true
+        },
+        {
+          "name": "sol_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "escrow_mint_in",
+          "optional": true
+        },
+        {
+          "name": "escrow_in",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "vault_in",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "token_program_in",
+          "optional": true
+        },
+        {
+          "name": "escrow_out",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "token_program_out",
+          "optional": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "swap_commit_out",
+      "docs": [
+        "Proves the output notes (deposit-shaped proof over the output asset, worth min_out)."
+      ],
+      "discriminator": [
+        144,
+        37,
+        253,
+        98,
+        245,
+        82,
+        226,
+        10
+      ],
+      "accounts": [
+        {
+          "name": "relayer",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "order"
+          ]
+        },
+        {
+          "name": "pool",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "asset_out",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  115,
+                  115,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "asset_out.mint",
+                "account": "Asset"
+              }
+            ]
+          }
+        },
+        {
+          "name": "order",
+          "writable": true
+        },
+        {
+          "name": "nullifier0",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  117,
+                  108,
+                  108,
+                  105,
+                  102,
+                  105,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "out.input_nullifiers [0]"
+              }
+            ]
+          }
+        },
+        {
+          "name": "nullifier1",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  117,
+                  108,
+                  108,
+                  105,
+                  102,
+                  105,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "out.input_nullifiers [1]"
+              }
+            ]
+          }
+        },
+        {
+          "name": "escrow_mint_out"
+        },
+        {
+          "name": "escrow_out",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "order"
+              },
+              {
+                "kind": "account",
+                "path": "token_program_out"
+              },
+              {
+                "kind": "account",
+                "path": "escrow_mint_out"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "token_program_out"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "out",
+          "type": {
+            "defined": {
+              "name": "TransactArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "swap_execute",
+      "docs": [
+        "Runs the aggregator route and credits the output notes."
+      ],
+      "discriminator": [
+        196,
+        229,
+        184,
+        241,
+        84,
+        146,
+        34,
+        128
+      ],
+      "accounts": [
+        {
+          "name": "relayer",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "order"
+          ]
+        },
+        {
+          "name": "pool",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "order",
+          "writable": true
+        },
+        {
+          "name": "sol_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "escrow_mint_in"
+        },
+        {
+          "name": "escrow_mint_out"
+        },
+        {
+          "name": "escrow_in",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "order"
+              },
+              {
+                "kind": "account",
+                "path": "token_program_in"
+              },
+              {
+                "kind": "account",
+                "path": "escrow_mint_in"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "escrow_out",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "order"
+              },
+              {
+                "kind": "account",
+                "path": "token_program_out"
+              },
+              {
+                "kind": "account",
+                "path": "escrow_mint_out"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "vault_in",
+          "docs": [
+            "Pool vault for the input asset (token assets only): receives whatever the route didn't spend."
+          ],
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "vault_out",
+          "docs": [
+            "Pool vault for the output asset (token assets only): receives min_out."
+          ],
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "relayer_out_account",
+          "docs": [
+            "When buying SOL the surplus reaches the relayer through the order's close instead."
+          ],
+          "writable": true
+        },
+        {
+          "name": "token_program_in"
+        },
+        {
+          "name": "token_program_out"
+        },
+        {
+          "name": "swap_program",
+          "address": "JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "route_data",
+          "type": "bytes"
+        }
+      ]
+    },
+    {
+      "name": "swap_open",
+      "docs": [
+        "Spends the user's notes into the order's escrow; the proof binds the order's terms."
+      ],
+      "discriminator": [
+        203,
+        207,
+        96,
+        11,
+        244,
+        225,
+        137,
+        133
+      ],
+      "accounts": [
+        {
+          "name": "relayer",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "order"
+          ]
+        },
+        {
+          "name": "pool",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "order",
+          "writable": true
+        },
+        {
+          "name": "nullifier0",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  117,
+                  108,
+                  108,
+                  105,
+                  102,
+                  105,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "tx.input_nullifiers [0]"
+              }
+            ]
+          }
+        },
+        {
+          "name": "nullifier1",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  117,
+                  108,
+                  108,
+                  105,
+                  102,
+                  105,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "tx.input_nullifiers [1]"
+              }
+            ]
+          }
+        },
+        {
+          "name": "relayer_fee_account",
+          "writable": true
+        },
+        {
+          "name": "sol_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "escrow_mint_in"
+        },
+        {
+          "name": "escrow_in",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "order"
+              },
+              {
+                "kind": "account",
+                "path": "token_program_in"
+              },
+              {
+                "kind": "account",
+                "path": "escrow_mint_in"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "vault_in",
+          "docs": [
+            "Pool vault for the input asset (token assets only)."
+          ],
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "token_program_in"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "tx",
+          "type": {
+            "defined": {
+              "name": "TransactArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "swap_prepare",
+      "docs": [
+        "Creates a swap order and proves its refund notes (deposit-shaped proof over the input asset)."
+      ],
+      "discriminator": [
+        4,
+        38,
+        17,
+        221,
+        175,
+        60,
+        141,
+        113
+      ],
+      "accounts": [
+        {
+          "name": "relayer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "pool",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "asset_in",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  115,
+                  115,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "asset_in.mint",
+                "account": "Asset"
+              }
+            ]
+          }
+        },
+        {
+          "name": "order",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  111,
+                  114,
+                  100,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "order_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "nullifier0",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  117,
+                  108,
+                  108,
+                  105,
+                  102,
+                  105,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "refund.input_nullifiers [0]"
+              }
+            ]
+          }
+        },
+        {
+          "name": "nullifier1",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  117,
+                  108,
+                  108,
+                  105,
+                  102,
+                  105,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "refund.input_nullifiers [1]"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "order_id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "deadline",
+          "type": "i64"
+        },
+        {
+          "name": "refund",
+          "type": {
+            "defined": {
+              "name": "TransactArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "transact",
+      "docs": [
+        "Deposit (ext_amount > 0), withdraw (< 0) or private merge/split (= 0)."
+      ],
+      "discriminator": [
+        217,
+        149,
+        130,
+        143,
+        221,
+        52,
+        252,
+        119
+      ],
+      "accounts": [
+        {
+          "name": "signer",
+          "docs": [
+            "Pays fees and nullifier rent. The depositor for deposits; a relayer or anyone for withdrawals."
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "pool",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "asset",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  115,
+                  115,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "asset.mint",
+                "account": "Asset"
+              }
+            ]
+          }
+        },
+        {
+          "name": "nullifier0",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  117,
+                  108,
+                  108,
+                  105,
+                  102,
+                  105,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "args.input_nullifiers [0]"
+              }
+            ]
+          }
+        },
+        {
+          "name": "nullifier1",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  117,
+                  108,
+                  108,
+                  105,
+                  102,
+                  105,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "args.input_nullifiers [1]"
+              }
+            ]
+          }
+        },
+        {
+          "name": "recipient",
+          "writable": true
+        },
+        {
+          "name": "relayer",
+          "writable": true
+        },
+        {
+          "name": "sol_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint",
+          "optional": true
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "depositor_token",
+          "docs": [
+            "Source of a token deposit, owned by `signer`."
+          ],
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "token_program",
+          "optional": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "TransactArgs"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Asset",
+      "discriminator": [
+        234,
+        180,
+        241,
+        252,
+        139,
+        224,
+        160,
+        8
+      ]
+    },
+    {
+      "name": "BuyOrder",
+      "discriminator": [
+        227,
+        11,
+        110,
+        187,
+        37,
+        80,
+        95,
+        121
+      ]
+    },
+    {
+      "name": "Nullifier",
+      "discriminator": [
+        18,
+        56,
+        142,
+        165,
+        181,
+        158,
+        187,
+        133
+      ]
+    },
+    {
+      "name": "Pool",
+      "discriminator": [
+        241,
+        154,
+        109,
+        4,
+        17,
+        177,
+        109,
+        188
+      ]
+    },
+    {
+      "name": "SwapOrder",
+      "discriminator": [
+        120,
+        0,
+        228,
+        80,
+        167,
+        248,
+        73,
+        201
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "TransactEvent",
+      "discriminator": [
+        89,
+        245,
+        87,
+        250,
+        222,
+        30,
+        135,
+        142
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "Unauthorized",
+      "msg": "Only the pool admin can do this"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidProof",
+      "msg": "Proof is malformed or does not verify"
+    },
+    {
+      "code": 6002,
+      "name": "InvalidEncryptedOutput",
+      "msg": "Encrypted outputs must be 68 bytes each"
+    },
+    {
+      "code": 6003,
+      "name": "InvalidAmount",
+      "msg": "Amount out of range"
+    },
+    {
+      "code": 6004,
+      "name": "DuplicateNullifier",
+      "msg": "Both inputs use the same nullifier"
+    },
+    {
+      "code": 6005,
+      "name": "FieldOverflow",
+      "msg": "Value is not a valid field element"
+    },
+    {
+      "code": 6006,
+      "name": "UnknownRoot",
+      "msg": "Merkle root is not in the recent history"
+    },
+    {
+      "code": 6007,
+      "name": "DepositsPaused",
+      "msg": "Deposits of this asset are paused"
+    },
+    {
+      "code": 6008,
+      "name": "InvalidDenomination",
+      "msg": "Amount is not an allowed deposit size for this asset"
+    },
+    {
+      "code": 6009,
+      "name": "FeeOnDeposit",
+      "msg": "Deposits cannot carry a relayer fee"
+    },
+    {
+      "code": 6010,
+      "name": "MissingTokenAccounts",
+      "msg": "Token assets need mint, vault and token program accounts"
+    },
+    {
+      "code": 6011,
+      "name": "WrongMint",
+      "msg": "Mint does not match the asset"
+    },
+    {
+      "code": 6012,
+      "name": "WrongVault",
+      "msg": "Vault is not the pool's token account for this mint"
+    },
+    {
+      "code": 6013,
+      "name": "TransferFeeNotSupported",
+      "msg": "Token charged a transfer fee; this asset is not supported"
+    },
+    {
+      "code": 6014,
+      "name": "TreeFull",
+      "msg": "Merkle tree is full"
+    },
+    {
+      "code": 6015,
+      "name": "PoseidonFailed",
+      "msg": "Poseidon hash failed"
+    },
+    {
+      "code": 6016,
+      "name": "SwapExpired",
+      "msg": "Swap deadline has passed"
+    },
+    {
+      "code": 6017,
+      "name": "SwapSameAsset",
+      "msg": "Cannot swap an asset for itself"
+    },
+    {
+      "code": 6018,
+      "name": "SwapState",
+      "msg": "Swap order is not in the right state for this step"
+    },
+    {
+      "code": 6019,
+      "name": "SwapUnderfilled",
+      "msg": "Swap returned less than the minimum"
+    },
+    {
+      "code": 6020,
+      "name": "WrongSwapProgram",
+      "msg": "Swap program is not the whitelisted aggregator"
+    },
+    {
+      "code": 6021,
+      "name": "ForbiddenRouteAccount",
+      "msg": "Swap route may not touch pool accounts"
+    }
+  ],
+  "types": [
+    {
+      "name": "Asset",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "mint",
+            "docs": [
+              "Pubkey::default() for native SOL."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "decimals",
+            "type": "u8"
+          },
+          {
+            "name": "paused",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "denominations",
+            "type": {
+              "vec": "u64"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "BuyOrder",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "relayer",
+            "type": "pubkey"
+          },
+          {
+            "name": "order_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "mint_in",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount_in",
+            "type": "u64"
+          },
+          {
+            "name": "gas",
+            "docs": [
+              "Extra lamports (SOL input only) handed to the destination so it can pay fees later."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "mint_out",
+            "type": "pubkey"
+          },
+          {
+            "name": "min_out",
+            "type": "u64"
+          },
+          {
+            "name": "deadline",
+            "type": "i64"
+          },
+          {
+            "name": "destination",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BuyTerms",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "mint_out",
+            "type": "pubkey"
+          },
+          {
+            "name": "min_out",
+            "type": "u64"
+          },
+          {
+            "name": "deadline",
+            "type": "i64"
+          },
+          {
+            "name": "destination",
+            "type": "pubkey"
+          },
+          {
+            "name": "gas",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Nullifier",
+      "docs": [
+        "Exists only to mark a nullifier as spent; creating it twice fails."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": []
+      }
+    },
+    {
+      "name": "Pool",
+      "serialization": "bytemuck",
+      "repr": {
+        "kind": "c"
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "next_index",
+            "type": "u64"
+          },
+          {
+            "name": "current_root_index",
+            "type": "u64"
+          },
+          {
+            "name": "filled_subtrees",
+            "type": {
+              "array": [
+                {
+                  "array": [
+                    "u8",
+                    32
+                  ]
+                },
+                20
+              ]
+            }
+          },
+          {
+            "name": "zeros",
+            "type": {
+              "array": [
+                {
+                  "array": [
+                    "u8",
+                    32
+                  ]
+                },
+                20
+              ]
+            }
+          },
+          {
+            "name": "roots",
+            "type": {
+              "array": [
+                {
+                  "array": [
+                    "u8",
+                    32
+                  ]
+                },
+                100
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "SwapOrder",
+      "docs": [
+        "One swap. Seeded by a random id chosen by the user's client."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "relayer",
+            "type": "pubkey"
+          },
+          {
+            "name": "order_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "mint_in",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount_in",
+            "type": "u64"
+          },
+          {
+            "name": "deadline",
+            "type": "i64"
+          },
+          {
+            "name": "refund_commitments",
+            "type": {
+              "array": [
+                {
+                  "array": [
+                    "u8",
+                    32
+                  ]
+                },
+                2
+              ]
+            }
+          },
+          {
+            "name": "refund_encrypted1",
+            "type": "bytes"
+          },
+          {
+            "name": "refund_encrypted2",
+            "type": "bytes"
+          },
+          {
+            "name": "out_ready",
+            "type": "bool"
+          },
+          {
+            "name": "mint_out",
+            "type": "pubkey"
+          },
+          {
+            "name": "min_out",
+            "type": "u64"
+          },
+          {
+            "name": "out_commitments",
+            "type": {
+              "array": [
+                {
+                  "array": [
+                    "u8",
+                    32
+                  ]
+                },
+                2
+              ]
+            }
+          },
+          {
+            "name": "out_encrypted1",
+            "type": "bytes"
+          },
+          {
+            "name": "out_encrypted2",
+            "type": "bytes"
+          },
+          {
+            "name": "opened",
+            "docs": [
+              "swap_open ran: amount_in sits in the escrow."
+            ],
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TransactArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "proof",
+            "type": "bytes"
+          },
+          {
+            "name": "root",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "input_nullifiers",
+            "type": {
+              "array": [
+                {
+                  "array": [
+                    "u8",
+                    32
+                  ]
+                },
+                2
+              ]
+            }
+          },
+          {
+            "name": "output_commitments",
+            "type": {
+              "array": [
+                {
+                  "array": [
+                    "u8",
+                    32
+                  ]
+                },
+                2
+              ]
+            }
+          },
+          {
+            "name": "ext_amount",
+            "type": "i64"
+          },
+          {
+            "name": "fee",
+            "type": "u64"
+          },
+          {
+            "name": "encrypted_output1",
+            "type": "bytes"
+          },
+          {
+            "name": "encrypted_output2",
+            "type": "bytes"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TransactEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "first_index",
+            "type": "u64"
+          },
+          {
+            "name": "commitments",
+            "type": {
+              "array": [
+                {
+                  "array": [
+                    "u8",
+                    32
+                  ]
+                },
+                2
+              ]
+            }
+          },
+          {
+            "name": "nullifiers",
+            "type": {
+              "array": [
+                {
+                  "array": [
+                    "u8",
+                    32
+                  ]
+                },
+                2
+              ]
+            }
+          },
+          {
+            "name": "encrypted_output1",
+            "type": "bytes"
+          },
+          {
+            "name": "encrypted_output2",
+            "type": "bytes"
+          },
+          {
+            "name": "ext_amount",
+            "type": "i64"
+          },
+          {
+            "name": "fee",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ]
+}

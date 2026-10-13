@@ -1,0 +1,15 @@
+{
+  "label": "PRIVATE BUY",
+  "file": "Vanish - Private Buy.mp4",
+  "lines": [
+    { "id": "intro", "text": "Private buy lets you buy any token on Solana, straight into a brand-new wallet that can't be traced back to you.", "say": "Private buy lets you buy any token on Solana, straight into a brand new wallet that can't be traced back to you." },
+    { "id": "problem", "text": "Ape into a memecoin from your main wallet, and copy-traders and snipers see it instantly." },
+    { "id": "paste", "text": "Paste any token's mint address. Vanish pulls its chart, market cap and liquidity from DexScreener, and warns you when liquidity is thin.", "pause": 0.3 },
+    { "id": "wallet", "text": "Pick where it goes, or let Vanish create a fresh wallet for you. Save the key, and import it into Phantom whenever you like." },
+    { "id": "gas", "text": "Vanish can send a little Solana along for gas, so you never have to fund the new wallet yourself." },
+    { "id": "buy", "text": "One proof spends your private balance. The relayer buys through Jupiter, and the tokens land straight in the new wallet." },
+    { "id": "safety", "text": "Your minimum is enforced on-chain. If the buy can't fill, your Solana goes to the new wallet instead, still unlinked." },
+    { "id": "result", "text": "The new wallet's history starts at the Vanish pool. Nothing points back to you." },
+    { "id": "outro", "text": "Vanish private buy. Any token, no trail. vanish.website", "say": "Vanish private buy. Any token, no trail. vanish dot website.", "pause": 0.3 }
+  ]
+}

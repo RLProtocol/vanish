@@ -1,0 +1,273 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Vanish - Private Buy</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=block" rel="stylesheet" />
+<link rel="stylesheet" href="base.css" />
+<script src="buy.timing.js"></script>
+<style>
+  .tok { width: 64px; height: 64px; border-radius: 50%; background: var(--grad); display: grid; place-items: center; font: 800 30px var(--font); color: #0d0b14; flex: none; }
+  .check { display: flex; gap: 14px; align-items: center; font-size: 21px; color: var(--text-2); }
+  .check i { width: 28px; height: 28px; border-radius: 7px; border: 2px solid var(--line); display: grid; place-items: center; font-style: normal; font-weight: 800; font-size: 17px; flex: none; }
+  .check.on i { background: var(--accent); border-color: var(--accent); color: #fff; }
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <div id="sIntro" class="scene">
+    <div class="abs" style="inset:0;display:grid;place-items:center;text-align:center">
+      <div>
+        <div id="iTag" class="chip" style="font-size:22px;letter-spacing:.14em">FEATURE 03</div>
+        <div id="iTitle" style="margin-top:28px;font:800 140px var(--font);letter-spacing:-.03em;line-height:1">Private <span class="grad-text">Buy</span></div>
+        <div id="iSub" style="margin-top:26px;font-size:40px;color:var(--text-2)">Any token, delivered to a brand-new wallet</div>
+        <div id="iFlow" class="row" style="justify-content:center;gap:22px;margin-top:56px">
+          <span class="chip grad-border" style="font-size:28px">Private balance</span><span class="muted" style="font-size:34px">→</span>
+          <span class="chip" style="font-size:28px">Jupiter</span><span class="muted" style="font-size:34px">→</span>
+          <span class="chip" style="font-size:28px">Fresh wallet</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="sProblem" class="scene">
+    <div id="pHead" class="abs" style="left:0;right:0;top:130px;text-align:center;font-size:62px;font-weight:700;letter-spacing:-.02em">Your main wallet is <span class="bad">being watched</span></div>
+    <div id="pEx" class="card abs" style="left:150px;top:290px;width:900px;padding:12px 32px">
+      <div class="explorer-row"><span class="mono">A1ic…9xQ</span><span class="muted mono">your main wallet</span></div>
+      <div class="explorer-row"><span>Bought <b>9.2M $GHOST</b></span><span class="muted mono">just now</span></div>
+      <div class="explorer-row" style="border:0"><span>Holds</span><span class="mono">42 SOL · 120 NVDAx · 18,400 USDC</span></div>
+    </div>
+    <div id="pAlert" class="popup abs" style="left:1150px;top:280px;width:620px;padding:24px 28px">
+      <div class="row" style="gap:12px"><span style="font-size:28px">🔔</span><b style="font-size:24px">Whale alert</b><span class="muted" style="margin-left:auto;font-size:19px">now</span></div>
+      <div style="font-size:22px;margin-top:12px;line-height:1.45;color:var(--text-2)">Tracked wallet <b class="mono">A1ic…9xQ</b> just bought <b>9.2M $GHOST</b>. Copying…</div>
+    </div>
+    <div id="pC1" class="chip red abs" style="left:1150px;top:520px">● copy-trade bots</div>
+    <div id="pC2" class="chip red abs" style="left:1440px;top:520px">● snipers</div>
+    <div id="pC3" class="chip red abs" style="left:1150px;top:600px">● wallet trackers front-running you</div>
+  </div>
+
+  <div id="sPaste" class="scene">
+    <div id="aT" class="scene-title abs" style="left:150px;top:200px">
+      <div class="num">STEP 1</div><h2>Paste the mint</h2>
+      <p>Chart, price, market cap and liquidity load from DexScreener.</p>
+    </div>
+    <div id="aWarn" class="abs" style="left:150px;top:590px;width:700px;display:grid;gap:14px">
+      <span class="chip" style="font-size:20px;white-space:normal;border-color:rgba(245,193,108,.5);color:var(--warn)">⚠ Anyone can copy a name or picture. Check the mint.</span>
+      <span class="chip" style="font-size:20px;white-space:normal;border-color:rgba(245,193,108,.5);color:var(--warn)">⚠ Very low liquidity ($6.2K): selling later may be hard.</span>
+    </div>
+    <div id="aCard" class="card abs" style="left:1020px;top:90px;width:740px;padding:30px">
+      <div class="tabs" style="margin-bottom:20px"><div class="tab">Shield</div><div class="tab">Unshield</div><div class="tab">Swap</div><div class="tab on">Buy</div></div>
+      <div class="label"><span>Spend</span><span>Private: 3.000 SOL</span></div>
+      <div class="field mono" style="font-size:28px"><span id="aSpend"></span></div>
+      <div class="label" style="margin-top:18px"><span>Token to buy</span><span>Paste the mint address</span></div>
+      <div class="field mono" style="font-size:22px;font-weight:500"><span id="aMint"></span><span id="aCaret" style="width:3px;height:30px;background:var(--text)"></span></div>
+      <div id="aTok" style="margin-top:16px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--field)">
+        <div style="height:96px;background:linear-gradient(120deg,#2a1a4a,#123b39)"></div>
+        <div class="row" style="gap:16px;padding:0 20px 16px;margin-top:-30px">
+          <div class="tok" style="border:4px solid var(--field)">G</div>
+          <div style="flex:1;margin-top:28px"><div style="font-size:28px;font-weight:700">$GHOST</div><div class="muted" style="font-size:19px">Ghost · pump.fun</div></div>
+          <div style="text-align:right;margin-top:28px"><div class="mono" style="font-size:23px">$0.00041</div><div class="ok" style="font-size:19px">+38.0% 24h</div></div>
+        </div>
+        <div class="row" style="border-top:1px solid var(--line)">
+          <div style="flex:1;padding:12px 20px"><div class="muted" style="font-size:16px">Market cap</div><div class="mono" style="font-size:21px">$4.2M</div></div>
+          <div style="flex:1;padding:12px 20px;border-left:1px solid var(--line)"><div class="muted" style="font-size:16px">Liquidity</div><div class="mono" style="font-size:21px">$310K</div></div>
+          <div style="flex:1;padding:12px 20px;border-left:1px solid var(--line)"><div class="muted" style="font-size:16px">Pair age</div><div class="mono" style="font-size:21px">3 days</div></div>
+        </div>
+        <div style="padding:12px 20px;border-top:1px solid var(--line);color:var(--accent-text);font-size:19px">View chart on DexScreener ↗</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="sWallet" class="scene">
+    <div id="wT" class="scene-title abs" style="left:150px;top:220px">
+      <div class="num">STEP 2</div><h2>A fresh wallet</h2>
+      <p>Created in your browser. It has never touched your main wallet.</p>
+      <div id="wPh" class="chip" style="margin-top:34px;font-size:21px">Phantom → Add wallet → Import private key</div>
+    </div>
+    <div id="wCard" class="card abs" style="left:1020px;top:140px;width:740px;padding:32px">
+      <div class="label"><span>Deliver to</span><span>A wallet you have never used</span></div>
+      <div class="field mono" style="font-size:22px;font-weight:500"><span id="wAddr" class="muted">New Solana address</span></div>
+      <div id="wLink" style="margin-top:14px;font-size:21px;color:var(--text-2);text-decoration:underline;text-underline-offset:4px">Create a new wallet for me</div>
+      <div id="wNew" style="margin-top:18px;padding:22px;border-radius:16px;border:1px solid rgba(245,193,108,.45);background:var(--field)">
+        <div style="font-size:20px;color:var(--muted);line-height:1.45"><b style="color:var(--text)">New wallet F7re…k2P</b> exists only in this tab until you save its key.</div>
+        <div class="mono" style="margin-top:14px;padding:12px;border:1px dashed var(--line);border-radius:10px;font-size:18px;letter-spacing:.06em;color:var(--text-2)">4Hq8 ••••••••••••••••••••••••••••••••••• Zr2a</div>
+        <div class="row" style="gap:10px;margin-top:14px"><span class="chip" style="font-size:18px;padding:8px 16px">Copy private key</span><span class="chip" style="font-size:18px;padding:8px 16px">Download .json</span></div>
+        <div id="wSaved" class="check" style="margin-top:16px"><i></i>I saved this key</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="sGas" class="scene">
+    <div id="gT" class="scene-title abs" style="left:150px;top:220px">
+      <div class="num">STEP 3</div><h2>Gas included</h2>
+      <p>Never fund the new wallet from your own: Vanish sends it 0.01 SOL with the tokens.</p>
+    </div>
+    <div id="gCard" class="card abs" style="left:1020px;top:150px;width:740px;padding:32px">
+      <div id="gChk" class="check" style="font-size:22px"><i></i>Also send 0.01 SOL so the new wallet can pay fees later</div>
+      <dl id="gSum" class="sum" style="margin-top:22px">
+        <div><dt>You get (estimate)</dt><dd>1,220,000 $GHOST</dd></div>
+        <div><dt>Guaranteed at least</dt><dd>1,207,800 $GHOST</dd></div>
+        <div><dt>Route</dt><dd>Raydium CLMM</dd></div>
+        <div><dt>Gas for the new wallet</dt><dd id="gGas">0.01 SOL</dd></div>
+        <div><dt>Relayer fee</dt><dd>0.006 SOL</dd></div>
+      </dl>
+      <div id="gBtn" class="btn" style="margin-top:22px">Buy $GHOST privately</div>
+    </div>
+  </div>
+
+  <div id="sBuy" class="scene">
+    <div id="bHead" class="abs" style="left:0;right:0;top:130px;text-align:center;font-size:58px;font-weight:700;letter-spacing:-.02em">One proof. <span class="grad-text">Straight to the new wallet.</span></div>
+    <div id="b0" class="node grad-border" style="left:110px;top:360px;width:360px"><b class="grad-text">Vanish pool</b><span>π spends 0.5 SOL</span></div>
+    <div id="b1" class="node" style="left:560px;top:360px;width:340px"><b>Order escrow</b><span>only this order</span></div>
+    <div id="b2" class="node" style="left:990px;top:360px;width:340px"><b>Jupiter</b><span>Raydium CLMM</span></div>
+    <div id="b3" class="node" style="left:1420px;top:360px;width:400px"><b>Fresh wallet</b><span>F7re…k2P</span><div id="bRecv" class="ok" style="margin-top:10px;font:700 24px var(--font)">+1,220,000 $GHOST<br/>+0.01 SOL gas</div></div>
+    <svg class="abs" style="left:0;top:0" width="1920" height="1080"><g stroke="rgba(255,255,255,.3)" stroke-width="3"><path d="M470 430 H560"/><path d="M900 430 H990"/><path d="M1330 430 H1420"/></g>
+      <path id="bX" d="M290 640 C 290 760, 1620 760, 1620 640" stroke="rgba(255,143,126,.6)" stroke-width="3" fill="none" stroke-dasharray="12 12"/></svg>
+    <div id="bYou" class="chip abs" style="left:120px;top:580px;font-size:22px;opacity:.65">Your wallet A1ic…9xQ · not involved</div>
+    <div id="bNo" class="chip red abs" style="left:800px;top:730px">✕ no on-chain link</div>
+    <div id="bDots" class="abs" style="inset:0"></div>
+  </div>
+
+  <div id="sSafety" class="scene">
+    <div id="sHead" class="abs" style="left:0;right:0;top:120px;text-align:center;font-size:58px;font-weight:700;letter-spacing:-.02em">Protected either way</div>
+    <div id="sA" class="card abs" style="left:170px;top:250px;width:760px;padding:34px">
+      <div class="ok" style="font:600 20px var(--mono);letter-spacing:.1em">MINIMUM ENFORCED ON-CHAIN</div>
+      <div style="font-size:34px;font-weight:700;margin-top:14px">You get at least what you saw</div>
+      <div class="row" style="gap:14px;margin-top:22px"><span class="chip green" style="font-size:22px">✓ received ≥ 1,207,800 $GHOST</span></div>
+      <div class="muted" style="font-size:21px;margin-top:16px;line-height:1.45">Anything above the minimum is yours too.</div>
+    </div>
+    <div id="sB" class="card abs" style="left:990px;top:250px;width:760px;padding:34px">
+      <div class="warn" style="font:600 20px var(--mono);letter-spacing:.1em">IF IT CAN'T FILL</div>
+      <div style="font-size:34px;font-weight:700;margin-top:14px">Your SOL goes to the new wallet</div>
+      <div class="row" style="gap:14px;margin-top:22px;font-size:22px"><span class="chip">0.5 SOL + gas</span><span class="muted">→</span><span class="chip">F7re…k2P</span></div>
+      <div class="muted" style="font-size:21px;margin-top:16px;line-height:1.45">A plain private withdrawal. Still unlinked to you.</div>
+    </div>
+  </div>
+
+  <div id="sResult" class="scene">
+    <div id="xHead" class="abs" style="left:0;right:0;top:130px;text-align:center;font-size:58px;font-weight:700;letter-spacing:-.02em">The new wallet on Solscan</div>
+    <div id="xEx" class="card abs" style="left:360px;top:270px;width:1200px;padding:12px 34px">
+      <div class="explorer-row"><span class="mono"><b>F7re…k2P</b></span><span class="muted mono">created 2 min ago</span></div>
+      <div class="explorer-row"><span>Received <b>1,220,000 $GHOST</b></span><span class="mono grad-text" style="font-weight:600">from Vanish</span></div>
+      <div class="explorer-row"><span>Received <b>0.01 SOL</b></span><span class="mono grad-text" style="font-weight:600">from Vanish</span></div>
+      <div class="explorer-row" style="border:0"><span>Funded by</span><span class="mono">Vanish pool · <span class="muted">history starts here</span></span></div>
+    </div>
+    <div id="xNo" class="abs" style="left:0;right:0;top:640px;display:flex;justify-content:center"><span class="chip green" style="font-size:24px">Links to A1ic…9xQ: none</span></div>
+  </div>
+
+  <div id="sOutro" class="scene">
+    <div class="abs" style="inset:0;display:grid;place-items:center;text-align:center">
+      <div>
+        <div id="oWord" style="font:800 190px var(--font);letter-spacing:.24em;margin-right:-.24em"><span class="grad-text">VANISH</span></div>
+        <div id="oTag" style="margin-top:14px;font-size:48px;font-weight:600">Private buy. <span class="muted">Any token, no trail.</span></div>
+        <div id="oUrl" style="margin-top:44px"><span class="chip mono grad-border" style="font-size:34px;padding:16px 34px">vanish.website</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="engine.js"></script>
+<script>
+const { $, clamp, ease, prog, style, enter, popIn, typed, press, T, scene } = V;
+const BD = [];
+for (let i = 0; i < 20; i++) { const d = document.createElement("div"); d.className = "dot"; $("bDots").appendChild(d); BD.push(d); }
+// dots run behind the nodes
+$("sBuy").insertBefore($("bDots"), $("b0"));
+
+startVideo((t) => {
+  if (scene($("sIntro"), t, 0, T("problem", -0.45))) {
+    popIn($("iTag"), t, 0.3);
+    enter($("iTitle"), t, 0.5, 1e9, { dy: 50 });
+    enter($("iSub"), t, 1.1);
+    enter($("iFlow"), t, 1.8, 1e9, { dy: 24 });
+  }
+
+  const p0 = T("problem");
+  if (scene($("sProblem"), t, p0 - 0.3, T("paste", -0.5))) {
+    enter($("pHead"), t, p0);
+    enter($("pEx"), t, p0 + 0.4, 1e9, { dx: -60, dy: 0 });
+    const a = prog(t, p0 + 1.3, p0 + 1.7);
+    style($("pAlert"), { o: a, y: (1 - a) * -30, s: 0.96 + 0.04 * a });
+    ["pC1", "pC2", "pC3"].forEach((id, i) => popIn($(id), t, p0 + 2.2 + i * 0.45));
+  }
+
+  const a0 = T("paste");
+  if (scene($("sPaste"), t, a0 - 0.3, T("wallet", -0.5))) {
+    enter($("aT"), t, a0);
+    enter($("aCard"), t, a0 + 0.2, 1e9, { dx: 100, dy: 0 });
+    $("aSpend").textContent = typed("0.5", t, a0 + 0.8, 0.3);
+    const MINT = "GHoSt7Qe…aR9xpump";
+    $("aMint").textContent = typed(MINT, t, a0 + 1.4, 1.2);
+    $("aCaret").style.opacity = t < a0 + 2.7 && Math.floor(t * 2.5) % 2 === 0 ? 1 : 0;
+    enter($("aTok"), t, a0 + 2.9, 1e9, { dy: 20, dur: 0.5 });
+    [...$("aWarn").children].forEach((el, i) => popIn(el, t, a0 + 5.0 + i * 0.9));
+  }
+
+  const w0 = T("wallet");
+  if (scene($("sWallet"), t, w0 - 0.3, T("gas", -0.5))) {
+    enter($("wT"), t, w0);
+    enter($("wCard"), t, w0 + 0.2, 1e9, { dx: 100, dy: 0 });
+    press($("wLink"), t, w0 + 1.4);
+    enter($("wNew"), t, w0 + 1.6, 1e9, { dy: 18, dur: 0.5 });
+    $("wAddr").textContent = t > w0 + 1.6 ? "F7reXn3qLp…Vb9k2P" : "New Solana address";
+    $("wAddr").className = t > w0 + 1.6 ? "" : "muted";
+    const saved = t > w0 + 4.2;
+    $("wSaved").className = saved ? "check on" : "check";
+    $("wSaved").firstChild.textContent = saved ? "✓" : "";
+    enter($("wPh"), t, w0 + 4.8);
+  }
+
+  const g0 = T("gas");
+  if (scene($("sGas"), t, g0 - 0.3, T("buy", -0.5))) {
+    enter($("gT"), t, g0);
+    enter($("gCard"), t, g0 + 0.2, 1e9, { dx: 100, dy: 0 });
+    const on = t > g0 + 1.4;
+    $("gChk").className = on ? "check on" : "check";
+    $("gChk").firstChild.textContent = on ? "✓" : "";
+    $("gGas").style.color = on ? "var(--ok)" : "var(--text)";
+    enter($("gSum"), t, g0 + 0.9, 1e9, { dy: 14, dur: 0.4 });
+    press($("gBtn"), t, g0 + 4.4);
+  }
+
+  const b0 = T("buy");
+  if (scene($("sBuy"), t, b0 - 0.3, T("safety", -0.5))) {
+    enter($("bHead"), t, b0);
+    [0, 1, 2, 3].forEach((i) => enter($(`b${i}`), t, b0 + 0.4 + i * 0.35, 1e9, { dy: 30 }));
+    BD.forEach((d, i) => {
+      const p = clamp((t - b0 - 1.8 - i * 0.08) / 2.6);
+      d.style.opacity = p > 0 && p < 1 ? Math.sin(p * Math.PI) : 0;
+      d.style.transform = `translate(${470 + p * 950 - 9}px, ${422 + Math.sin(p * 9 + i) * 10}px)`;
+    });
+    $("bRecv").style.opacity = prog(t, b0 + 4.2, b0 + 4.6);
+    enter($("bYou"), t, b0 + 4.6);
+    $("bX").style.opacity = prog(t, b0 + 5.0, b0 + 5.4);
+    popIn($("bNo"), t, b0 + 5.3);
+  }
+
+  const s0 = T("safety");
+  if (scene($("sSafety"), t, s0 - 0.3, T("result", -0.5))) {
+    enter($("sHead"), t, s0);
+    enter($("sA"), t, s0 + 0.4, 1e9, { dx: -60, dy: 0 });
+    enter($("sB"), t, s0 + 2.7, 1e9, { dx: 60, dy: 0 });
+  }
+
+  const x0 = T("result");
+  if (scene($("sResult"), t, x0 - 0.3, T("outro", -0.5))) {
+    enter($("xHead"), t, x0);
+    enter($("xEx"), t, x0 + 0.3);
+    [...$("xEx").children].forEach((el, i) => enter(el, t, x0 + 0.5 + i * 0.3, 1e9, { dy: 12, dur: 0.35 }));
+    popIn($("xNo"), t, x0 + 2.4);
+  }
+
+  const o0 = T("outro");
+  if (scene($("sOutro"), t, o0 - 0.4, 1e9)) {
+    const w = prog(t, o0 - 0.2, o0 + 0.7);
+    style($("oWord"), { o: w, s: 1.1 - 0.1 * w, blur: (1 - w) * 16 });
+    enter($("oTag"), t, o0 + 0.9);
+    enter($("oUrl"), t, o0 + 1.8);
+  }
+});
+</script>
+</body>
+</html>

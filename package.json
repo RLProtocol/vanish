@@ -1,0 +1,32 @@
+{
+  "name": "vanish",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Shielded pool for SOL, stablecoins and tokenized stocks (xStocks, Backpack/Sunrise) on Solana",
+  "scripts": {
+    "circuits": "bash scripts/build-circuits.sh",
+    "vk": "node scripts/vk-to-rust.mjs",
+    "build": "anchor build",
+    "test": "anchor test",
+    "cli": "node cli/vanish.mjs",
+    "relayer": "node cli/relayer.mjs",
+    "deploy": "vercel build --prod && vercel deploy --prebuilt --prod"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.31.1",
+    "@noble/hashes": "^1.8.0",
+    "@solana/spl-token": "^0.4.15",
+    "@solana/web3.js": "^1.99.0",
+    "bs58": "^6.0.0",
+    "buffer": "^6.0.3",
+    "dotenv": "^16.6.1",
+    "poseidon-lite": "^0.3.0",
+    "snarkjs": "^0.7.6"
+  },
+  "overrides": {
+    "rpc-websockets": {
+      "uuid": "^11.1.0"
+    }
+  }
+}

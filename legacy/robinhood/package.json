@@ -1,0 +1,28 @@
+{
+  "name": "robinmix",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shielded pool (Tornado Nova-style) for ETH, USDG and Robinhood Stock Tokens on Robinhood Chain",
+  "scripts": {
+    "circuits": "bash scripts/build-circuits.sh",
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:testnet": "hardhat run scripts/deploy.js --network rhTestnet",
+    "deploy:mainnet": "hardhat run scripts/deploy.js --network rhMainnet",
+    "cli": "node src/cli.js",
+    "relayer": "node src/relayer.js",
+    "verify:mainnet": "hardhat run scripts/verify.js --network rhMainnet"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.29.1"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.6.1",
+    "circomlib": "^2.0.5",
+    "circomlibjs": "^0.1.7",
+    "dotenv": "^16.6.1",
+    "ethers": "^6.17.0",
+    "snarkjs": "^0.7.6"
+  }
+}
